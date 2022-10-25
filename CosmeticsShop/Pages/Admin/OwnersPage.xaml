@@ -18,8 +18,7 @@
                     <DataGridTextColumn Header="Отчество" Binding="{Binding Supervisor_Patronymic}"></DataGridTextColumn>
                     <DataGridTextColumn Header="Контактный телефон" Binding="{Binding Phone}"></DataGridTextColumn>
                     <DataGridTextColumn Header="Тип владельца" Binding= "{Binding TypeLegal}"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Адрес" Binding="{Binding NameOwner}"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Имя владельца" Binding="{Binding Type}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Имя владельца" Binding="{Binding NameOwner}"></DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

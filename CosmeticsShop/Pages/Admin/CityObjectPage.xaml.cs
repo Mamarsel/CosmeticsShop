@@ -94,7 +94,7 @@ namespace CosmeticsShop.Pages.Admin
         {
             PdfPTable table = new PdfPTable(7);
             Document doc = new Document(iTextSharp.text.PageSize.LETTER, 20, 20, 40, 20);
-            PdfWriter writer = PdfWriter.GetInstance(doc, new System.IO.FileStream("Test.pdf", System.IO.FileMode.Create)); //Создаем файл
+            PdfWriter writer = PdfWriter.GetInstance(doc, new System.IO.FileStream("Объекты города.pdf", System.IO.FileMode.Create)); //Создаем файл
             
             bf = BaseFont.CreateFont("C:\\games\\ofont.ru_Times New Roman.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             f_title = new Font(bf, 20);
@@ -131,7 +131,7 @@ namespace CosmeticsShop.Pages.Admin
                 }
                 doc.Add(table);
                 doc.Close();
-                System.Diagnostics.Process.Start("Test.pdf");
+                System.Diagnostics.Process.Start("Объекты города.pdf");
             }
         }
     }

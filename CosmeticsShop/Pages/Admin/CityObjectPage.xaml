@@ -48,7 +48,7 @@
                 <Label Foreground="AliceBlue" VerticalAlignment="Center" FontSize="16" HorizontalContentAlignment="Center">Добавить объект</Label>
             </Border>
             <Border PreviewMouseDown="PrintToPDF_PreviewMouseDown" Width="175" HorizontalAlignment="Right" Height="40" Grid.Row="1" Background="#4b27db" CornerRadius="5" x:Name="PrintToPDF">
-                <Label Foreground="AliceBlue" VerticalAlignment="Center" FontSize="16" HorizontalContentAlignment="Center">Экспорт в pdf</Label>
+                <Label Foreground="AliceBlue" VerticalAlignment="Center" FontSize="16" HorizontalContentAlignment="Center">Экспорт в PDF</Label>
             </Border>
 
         </Grid>
