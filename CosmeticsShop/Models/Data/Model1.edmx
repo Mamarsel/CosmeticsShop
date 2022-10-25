@@ -1,0 +1,333 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище UchPraktModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Applications">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DateOfThe" Type="date" Nullable="false" />
+          <Property Name="CityObjectID" Type="int" Nullable="false" />
+          <Property Name="EventName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TypeOfEvent" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="AttendanceObject">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="Attendance" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CityObjectID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CityObject">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="NumberOfSeats" Type="int" />
+          <Property Name="OwnerID" Type="int" Nullable="false" />
+          <Property Name="DateOpening" Type="date" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Available" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Owner">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Supervisor_First_Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Supervisor_Second_Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Supervisor_Patronymic" Type="nvarchar" MaxLength="50" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="TypeLegal" Type="nvarchar" MaxLength="50" />
+          <Property Name="NameOwner" Type="nchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_Applications_CityObject">
+          <End Role="CityObject" Type="Self.CityObject" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Applications" Type="Self.Applications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CityObject">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Applications">
+              <PropertyRef Name="CityObjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AttendanceObject_CityObject">
+          <End Role="CityObject" Type="Self.CityObject" Multiplicity="1" />
+          <End Role="AttendanceObject" Type="Self.AttendanceObject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CityObject">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AttendanceObject">
+              <PropertyRef Name="CityObjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CityObject_Owner">
+          <End Role="Owner" Type="Self.Owner" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CityObject" Type="Self.CityObject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Owner">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CityObject">
+              <PropertyRef Name="OwnerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище UchPraktModelContainer">
+          <EntitySet Name="Applications" EntityType="Self.Applications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AttendanceObject" EntityType="Self.AttendanceObject" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CityObject" EntityType="Self.CityObject" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Owner" EntityType="Self.Owner" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Applications_CityObject" Association="Self.FK_Applications_CityObject">
+            <End Role="CityObject" EntitySet="CityObject" />
+            <End Role="Applications" EntitySet="Applications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AttendanceObject_CityObject" Association="Self.FK_AttendanceObject_CityObject">
+            <End Role="CityObject" EntitySet="CityObject" />
+            <End Role="AttendanceObject" EntitySet="AttendanceObject" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CityObject_Owner" Association="Self.FK_CityObject_Owner">
+            <End Role="Owner" EntitySet="Owner" />
+            <End Role="CityObject" EntitySet="CityObject" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="UchPraktModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Applications">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateOfThe" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CityObjectID" Type="Int32" Nullable="false" />
+          <Property Name="EventName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TypeOfEvent" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="CityObject" Relationship="Self.FK_Applications_CityObject" FromRole="Applications" ToRole="CityObject" />
+        </EntityType>
+        <EntityType Name="AttendanceObject">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Attendance" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CityObjectID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CityObject" Relationship="Self.FK_AttendanceObject_CityObject" FromRole="AttendanceObject" ToRole="CityObject" />
+        </EntityType>
+        <EntityType Name="CityObject">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NumberOfSeats" Type="Int32" />
+          <Property Name="OwnerID" Type="Int32" Nullable="false" />
+          <Property Name="DateOpening" Type="DateTime" Precision="0" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Available" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Applications" Relationship="Self.FK_Applications_CityObject" FromRole="CityObject" ToRole="Applications" />
+          <NavigationProperty Name="AttendanceObject" Relationship="Self.FK_AttendanceObject_CityObject" FromRole="CityObject" ToRole="AttendanceObject" />
+          <NavigationProperty Name="Owner" Relationship="Self.FK_CityObject_Owner" FromRole="CityObject" ToRole="Owner" />
+        </EntityType>
+        <EntityType Name="Owner">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Supervisor_First_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Supervisor_Second_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Supervisor_Patronymic" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TypeLegal" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NameOwner" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="CityObject" Relationship="Self.FK_CityObject_Owner" FromRole="Owner" ToRole="CityObject" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_Applications_CityObject">
+          <End Role="CityObject" Type="Self.CityObject" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Applications" Type="Self.Applications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CityObject">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Applications">
+              <PropertyRef Name="CityObjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AttendanceObject_CityObject">
+          <End Role="CityObject" Type="Self.CityObject" Multiplicity="1" />
+          <End Role="AttendanceObject" Type="Self.AttendanceObject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CityObject">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AttendanceObject">
+              <PropertyRef Name="CityObjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CityObject_Owner">
+          <End Role="Owner" Type="Self.Owner" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CityObject" Type="Self.CityObject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Owner">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CityObject">
+              <PropertyRef Name="OwnerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="UchPraktEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Applications" EntityType="Self.Applications" />
+          <EntitySet Name="AttendanceObject" EntityType="Self.AttendanceObject" />
+          <EntitySet Name="CityObject" EntityType="Self.CityObject" />
+          <EntitySet Name="Owner" EntityType="Self.Owner" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <AssociationSet Name="FK_Applications_CityObject" Association="Self.FK_Applications_CityObject">
+            <End Role="CityObject" EntitySet="CityObject" />
+            <End Role="Applications" EntitySet="Applications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AttendanceObject_CityObject" Association="Self.FK_AttendanceObject_CityObject">
+            <End Role="CityObject" EntitySet="CityObject" />
+            <End Role="AttendanceObject" EntitySet="AttendanceObject" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CityObject_Owner" Association="Self.FK_CityObject_Owner">
+            <End Role="Owner" EntitySet="Owner" />
+            <End Role="CityObject" EntitySet="CityObject" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище UchPraktModelContainer" CdmEntityContainer="UchPraktEntities">
+          <EntitySetMapping Name="Applications">
+            <EntityTypeMapping TypeName="UchPraktModel.Applications">
+              <MappingFragment StoreEntitySet="Applications">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="DateOfThe" ColumnName="DateOfThe" />
+                <ScalarProperty Name="CityObjectID" ColumnName="CityObjectID" />
+                <ScalarProperty Name="EventName" ColumnName="EventName" />
+                <ScalarProperty Name="TypeOfEvent" ColumnName="TypeOfEvent" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AttendanceObject">
+            <EntityTypeMapping TypeName="UchPraktModel.AttendanceObject">
+              <MappingFragment StoreEntitySet="AttendanceObject">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Attendance" ColumnName="Attendance" />
+                <ScalarProperty Name="CityObjectID" ColumnName="CityObjectID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CityObject">
+            <EntityTypeMapping TypeName="UchPraktModel.CityObject">
+              <MappingFragment StoreEntitySet="CityObject">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="NumberOfSeats" ColumnName="NumberOfSeats" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+                <ScalarProperty Name="DateOpening" ColumnName="DateOpening" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Available" ColumnName="Available" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Owner">
+            <EntityTypeMapping TypeName="UchPraktModel.Owner">
+              <MappingFragment StoreEntitySet="Owner">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Supervisor_First_Name" ColumnName="Supervisor_First_Name" />
+                <ScalarProperty Name="Supervisor_Second_Name" ColumnName="Supervisor_Second_Name" />
+                <ScalarProperty Name="Supervisor_Patronymic" ColumnName="Supervisor_Patronymic" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="TypeLegal" ColumnName="TypeLegal" />
+                <ScalarProperty Name="NameOwner" ColumnName="NameOwner" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="UchPraktModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

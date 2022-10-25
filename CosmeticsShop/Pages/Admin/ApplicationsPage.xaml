@@ -1,0 +1,44 @@
+﻿<Page x:Class="CosmeticsShop.Pages.Admin.ApplicationsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:CosmeticsShop.Pages.Admin"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ApplicationsPage">
+
+    <Grid>
+      
+        <Grid>
+            <DataGrid Background="White" VerticalScrollBarVisibility="Auto"  x:Name="ApllicationsDG" AutoGenerateColumns="False" IsReadOnly="True" ColumnWidth="*" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.RowSpan="2">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Название" Binding="{Binding EventName}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Тип Мероприятия" Binding="{Binding TypeOfEvent}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Код объекта" Binding="{Binding CityObjectID}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Дата проведения" Binding="{Binding DateOfThe}"></DataGridTextColumn>
+
+                    <DataGridTemplateColumn Header="Изменить">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border x:Name="BtnForEdit" Background="#4b27db" CornerRadius="5"  PreviewMouseDown="BtnForEdit_PreviewMouseDown">
+                                    <Label  Foreground="AliceBlue" VerticalAlignment="Center" FontSize="14" HorizontalContentAlignment="Center">Изменить</Label>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Удалить">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border x:Name="BtnForDelete" Background="#4b27db" CornerRadius="5"  PreviewMouseDown="BtnForDelete_PreviewMouseDown">
+                                    <Label  Foreground="AliceBlue" VerticalAlignment="Center" FontSize="14" HorizontalContentAlignment="Center">Изменить</Label>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+
+</Page>
