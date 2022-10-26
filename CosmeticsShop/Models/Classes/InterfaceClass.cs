@@ -11,8 +11,7 @@ namespace CosmeticsShop
     static class InterfaceClass
     {
         /// <summary>
-        /// Класс с интерфейсами
-        /// для корректной работы экспортирования данных в PDF файл
+        /// Интерфейс предназначенный для возвращения элемента, который нужно извлечь
         /// </summary>
         public static IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj)
        where T : DependencyObject
@@ -26,7 +25,6 @@ namespace CosmeticsShop
                     {
                         yield return (T)child;
                     }
-
                     foreach (T childOfChild in FindVisualChildren<T>(child))
                     {
                         yield return childOfChild;
@@ -35,6 +33,11 @@ namespace CosmeticsShop
             }
         }
 
+        /// <summary>
+        /// Интерфейс, предназначенный для извлечения элементов из childitem, в нашем случае из конкретных строк DataGrid
+        /// </summary>
+        /// <param name="obj">Параметр, из которого будут извлекаться данные, допустим, строка DataGrid row</param>
+        /// <returns></returns>
         public static childItem FindVisualChild<childItem>(DependencyObject obj)
             where childItem : DependencyObject
         {
@@ -42,7 +45,6 @@ namespace CosmeticsShop
             {
                 return child;
             }
-
             return null;
         }
     }

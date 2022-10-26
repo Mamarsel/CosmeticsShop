@@ -25,18 +25,8 @@ namespace CosmeticsShop.Pages.Admin
             InitializeComponent();
             using (var db = new Models.Data.UchPraktEntities())
             {
-                ApllicationsDG.ItemsSource = db.Applications.ToList();
+                ApllicationsDG.ItemsSource = db.Applications.ToList(); //Загрузка данных о владельцах в DataGrid ApplicationsDG
             }
-        }
-
-        private void BtnForEdit_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        private void BtnForDelete_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-
         }
     }
 }

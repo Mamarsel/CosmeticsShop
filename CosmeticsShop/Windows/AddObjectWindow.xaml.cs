@@ -1,18 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using CosmeticsShop.Models.Data;
+using CosmeticsShop.Pages.Admin;
 
 namespace CosmeticsShop.Windows
 {
@@ -21,27 +12,23 @@ namespace CosmeticsShop.Windows
     /// </summary>
     public partial class AddObjectWindow : Window
     {
-        private CityObject _e;
-        public Pages.Admin.CityObjectPage _cs = new Pages.Admin.CityObjectPage();
-        public AddObjectWindow(Pages.Admin.CityObjectPage _c, CityObject e = null)
+        private CityObject _cityObj;
+        public CityObjectPage CityObjPage = new CityObjectPage();
+        public AddObjectWindow(CityObjectPage _cityObjectPage, CityObject cityobj = null)
         {
             InitializeComponent();
-            
-
-            _e = e;
-            _cs = _c;
-
-            if (_e != null)
+            _cityObj = cityobj;
+            CityObjPage = _cityObjectPage;
+            if (_cityObj != null) //Если переданный объект не пустой, то заполняем поля для ввода значениями этого объекта
             {
-                
-                NameTB.Text = _e.Name;
-                TypeTB.Text = _e.Type;
-                AddressTB.Text = _e.Address;
+                NameTB.Text = _cityObj.Name;
+                TypeTB.Text = _cityObj.Type;
+                AddressTB.Text = _cityObj.Address;
 
-                NumberTB.Text = Convert.ToString(_e.NumberOfSeats);
-                DateTB.Text = Convert.ToString(_e.DateOpening);
-                OwnerIDTB.Text = Convert.ToString(_e.OwnerID);
-                AvailableCB.IsChecked = _e.Available;
+                NumberTB.Text = Convert.ToString(_cityObj.NumberOfSeats);
+                DateTB.Text = Convert.ToString(_cityObj.DateOpening);
+                OwnerIDTB.Text = Convert.ToString(_cityObj.OwnerID);
+                AvailableCB.IsChecked = _cityObj.Available;
 
                 LabelOfBorder.Text = "Изменить";
                 lbl.Content = "Изменение объекта";
@@ -52,7 +39,14 @@ namespace CosmeticsShop.Windows
                 lbl.Content = "Добавление объекта";
             }
         }
-
+        /// <summary>
+        /// Обработчик событий для изменения или добавления данных
+        /// В зависимости он значения параметра конструктора cityObj проводится 
+        /// либо изменение выбранных данных
+        /// либо добавление новых.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddBTN_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Owner owner = new Owner();
@@ -62,13 +56,12 @@ namespace CosmeticsShop.Windows
             }
             if (owner != null &&  !String.IsNullOrEmpty(AddressTB.Text) && !String.IsNullOrEmpty(TypeTB.Text) && !String.IsNullOrEmpty(OwnerIDTB.Text))
             {
-                if (_e == null)
+                if (_cityObj == null)
                 {
                     using (UchPraktEntities db = new UchPraktEntities())
                     {
                         CityObject s = new CityObject()
                         {
-
                             Name = NameTB.Text,
                             Type = TypeTB.Text,
                             Address = AddressTB.Text,
@@ -79,29 +72,28 @@ namespace CosmeticsShop.Windows
                         };
                         db.CityObject.Add(s);
                         db.SaveChanges();
-                        _cs.RefreshObj(); // Вот здесь заново загружаю датагрид при добавлении
+                        CityObjPage.RefreshObj();
                         this.Hide();
                         MessageBox.Show("Данные добавлены");
                     }
                 }
-                if (_e != null)
+                if (_cityObj != null)
                 {
                     using (UchPraktEntities db = new UchPraktEntities())
                     {
-                        var ee = db.CityObject.FirstOrDefault(p => p.Id == _e.Id);
-                        ee.Name = NameTB.Text;
-                        ee.Type = TypeTB.Text;
-                        ee.Address = AddressTB.Text;
-                        ee.OwnerID = owner.Id;
-                        ee.Available = AvailableCB.IsChecked.Value;
-                        ee.DateOpening = Convert.ToDateTime(DateTB.Text);
-                        ee.NumberOfSeats = Convert.ToInt32(NumberTB.Text);
+                        var dbCityObject = db.CityObject.FirstOrDefault(p => p.Id == _cityObj.Id);
+                        dbCityObject.Name = NameTB.Text;
+                        dbCityObject.Type = TypeTB.Text;
+                        dbCityObject.Address = AddressTB.Text;
+                        dbCityObject.OwnerID = owner.Id;
+                        dbCityObject.Available = AvailableCB.IsChecked.Value;
+                        dbCityObject.DateOpening = Convert.ToDateTime(DateTB.Text);
+                        dbCityObject.NumberOfSeats = Convert.ToInt32(NumberTB.Text);
                         db.SaveChanges();
-                        _cs.RefreshObj();
+                        CityObjPage.RefreshObj();
                         this.Hide();
                         MessageBox.Show("Данные добавлены");
                     }
-
                 }
             }
             else

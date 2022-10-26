@@ -1,36 +1,24 @@
 ﻿using iTextSharp.text;
 using iTextSharp.text.pdf;
-using iTextSharp.text.html;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Data;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
 using iText.Layout.Element;
 using Paragraph = iText.Layout.Element.Paragraph;
 using CosmeticsShop.Models.Data;
+using CosmeticsShop.Windows;
 
 namespace CosmeticsShop.Pages.Admin
 {
     /// <summary>
-    /// Логика взаимодействия для CityObjectPage.xaml
+    /// Логика взаимодействия для CityObjectPage.xamlъ
+    /// В данном классе проводится Добавление/изменение/вывод данных в DataGrid, так же экспорт в PDF-файл
     /// </summary>
-    /// 
     public partial class CityObjectPage : Page
     {
         BaseFont bf;
@@ -43,8 +31,10 @@ namespace CosmeticsShop.Pages.Admin
             {
                 ObjectsDG.ItemsSource = db.CityObject.ToList();
             }
-            
         }
+        /// <summary>
+        /// Метод, предназначенный для обновления содержимого DataGrid
+        /// </summary>
         public void RefreshObj()
         {
             ObjectsDG.ItemsSource = null;
@@ -52,15 +42,22 @@ namespace CosmeticsShop.Pages.Admin
             using (var db = new UchPraktEntities())
             {
                 ObjectsDG.ItemsSource = db.CityObject.ToList();
-
             }
-
         }
+        /// <summary>
+        /// Обработчик событий открытия окна для изменений данных
+        /// В качестве параметров AddObjectWindow передается данное окно
+        /// и выбранная строка с DataGrid
+        /// </summary>
         private void BtnForEdit_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            Windows.AddObjectWindow addObjectWindow = new Windows.AddObjectWindow(this, (sender as Border).DataContext as CityObject);
+            AddObjectWindow addObjectWindow = new AddObjectWindow(this, (sender as Border).DataContext as CityObject);
             addObjectWindow.Show();
         }
+        /// <summary>
+        /// Данный обработчик событий предназначен для удаления выбранных данных из базы данных
+        /// Применяется каскадное удаление данных, связанных между собой внешним ключом
+        /// </summary>
 
         private void BtnForDelete_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -80,13 +77,14 @@ namespace CosmeticsShop.Pages.Admin
                 }
             }
         }
-
+        /// <summary>
+        /// Обработчик событий открытия окна добавления данных
+        /// </summary>
         private void AddObject_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            Windows.AddObjectWindow a = new Windows.AddObjectWindow(this);
+            AddObjectWindow a = new AddObjectWindow(this);
             a.Show();
         }
-
         /// <summary>
         ///  Метод, предназначенный для экспорта данных в PDF файл
         /// </summary>
@@ -97,19 +95,23 @@ namespace CosmeticsShop.Pages.Admin
             PdfWriter writer = PdfWriter.GetInstance(doc, new System.IO.FileStream("Объекты города.pdf", System.IO.FileMode.Create)); //Создаем файл
             
             bf = BaseFont.CreateFont("C:\\games\\ofont.ru_Times New Roman.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+
             f_title = new Font(bf, 20);
             f_text = new Font(bf, 14);
             
             doc.Open();
             doc.Add(new Phrase("Объекты города",f_title));
+
             for (int j = 0; j < 7; ++j)
             {
-                if (ObjectsDG.Columns[j].Header.ToString() == "Изменить" || ObjectsDG.Columns[j].Header.ToString() == "Удалить")
+                if (ObjectsDG.Columns[j].Header.ToString() == "Изменить" || ObjectsDG.Columns[j].Header.ToString() == "Удалить") //Пропускаем соответствующие столбцы
                     continue;
                 table.AddCell(new Phrase(ObjectsDG.Columns[j].Header.ToString(), f_text));
             }
+
             table.HeaderRows = 0;
             IEnumerable itemsSource = ObjectsDG.ItemsSource as IEnumerable;
+
             if (itemsSource != null)
             {
                 foreach (var item in itemsSource)
@@ -117,7 +119,7 @@ namespace CosmeticsShop.Pages.Admin
                     DataGridRow row = ObjectsDG.ItemContainerGenerator.ContainerFromItem(item) as DataGridRow;
                     if (row != null)
                     {
-                        DataGridCellsPresenter presenter = InterfaceClass.FindVisualChild<DataGridCellsPresenter>(row);
+                        DataGridCellsPresenter presenter = InterfaceClass.FindVisualChild<DataGridCellsPresenter>(row); 
                         for (int i = 0; i < 7; ++i)
                         {
                             DataGridCell cell = (DataGridCell)presenter.ItemContainerGenerator.ContainerFromIndex(i);
